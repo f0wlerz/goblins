@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
+import { config as dotenvConfig } from "dotenv";
 
-dotenv.config();
+dotenvConfig();
 
 const {
   DISCORD_TOKEN,
@@ -24,7 +24,7 @@ if (
   const missingVars = [];
   if (!DISCORD_TOKEN) missingVars.push("DISCORD_TOKEN");
   if (!DISCORD_CLIENT_ID) missingVars.push("DISCORD_CLIENT_ID");
-  if (!BOT_HOME_GUILD) missingVars.push("EVE_HOME_GUILD");
+  if (!BOT_HOME_GUILD) missingVars.push("BOT_HOME_GUILD");
   if (!OWNER_ID) missingVars.push("OWNER_ID");
   if (!LOGS_WEBHOOK_URL) missingVars.push("LOGS_WEBHOOK_URL");
   if (!REPORT_CHANNEL) missingVars.push("REPORT_CHANNEL");
@@ -33,11 +33,11 @@ if (
 }
 
 /**
- * Configuration object for the Maskowlerz small goblin.
+ * Configuration object for the Goblins bot.
  *
  * @property {string} DISCORD_TOKEN - The token used to authenticate with the Discord API.
  * @property {string} DISCORD_CLIENT_ID - The client ID of the Discord application.
- * @property {string} BOT_HOME_GUILD - The ID of the home guild (server) for Maskowlerz.
+ * @property {string} BOT_HOME_GUILD - The ID of the home guild (server).
  * @property {string} OWNER_ID - The ID of the owner of the bot.
  * @property {string} LOGS_WEBHOOK_URL - The URL of the webhook used for logging.
  * @property {string} REPORT_CHANNEL - The ID of the channel where reports are sent.
