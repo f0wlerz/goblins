@@ -18,7 +18,7 @@
     "format": "prettier --write \"**/*.{json,ts}\"",
     "lint": "eslint .",
     "generate": "prisma generate",
-    "build-js": "node build ./index.ts --outdir ./dist --format esm --target node",
+    "build-js": "tsc ./index.ts --outdir ./dist --target es2024 --moduleResolution node",
     "postbuild": "cp -r node_modules/.prisma dist/ && cp -r assets dist/",
     "build": "npm run generate && npm run build-js && npm run postbuild",
     "start": "node dist/index.js"
@@ -28,10 +28,11 @@
     "eslint": "^9.27.0",
     "globals": "^16.2.0",
     "prettier": "3.5.3",
+    "prisma": "^6.12.0",
     "typescript-eslint": "^8.33.0"
   },
   "peerDependencies": {
-      "typescript": "^5.8.3"
+    "typescript": "^5.8.3"
   },
   "private": true,
   "type": "module",
