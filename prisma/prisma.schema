@@ -1,0 +1,85 @@
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model GlobalUserData {
+    uuid            String          @id @default(uuid())
+    userId          String          @unique
+    birthDate       DateTime?       @db.Date
+    quizGoodAnswers Int             @default(0)
+    quizBadAnswers  Int             @default(0)
+    QuizQuestions   QuizQuestions[]
+    Quote           Quote[]
+    MpThreads       MpThreads[]
+
+    @@index([userId])
+}
+
+model Config {
+    uuid    String @id @default(uuid())
+    key     String
+    value   String
+    guildId String
+
+    @@unique([key, guildId], name: "unique_key_guildId")
+    @@index([guildId])
+}
+
+model GuildData {
+    uuid                    String          @id @default(uuid())
+    guildId                 String          @unique
+    debugRoleId             String?
+    calendarUrl             String?         @db.MediumText
+    calendarMessageId       String?
+    CalendarMessageData     BotMessageData? @relation(fields: [CalendarMessageDatauuid], references: [uuid])
+    CalendarMessageDatauuid String?
+
+    @@index([guildId])
+}
+
+model QuizQuestions {
+    uuid         String          @id @default(uuid())
+    question     String          @unique @db.VarChar(2048)
+    answer       String
+    badAnswer1   String
+    badAnswer2   String
+    badAnswer3   String
+    createdAt    DateTime        @default(now())
+    authorUuid   String?
+    guildId      String
+    lastTimeUsed DateTime?
+    category     String
+    difficulty   String
+    author       GlobalUserData? @relation(fields: [authorUuid], references: [uuid], onDelete: Cascade)
+
+    @@index([guildId])
+    @@index([authorUuid], map: "QuizQuestions_authorUuid_fkey")
+}
+
+model BotMessageData {
+    uuid      String      @id @default(uuid())
+    guildId   String
+    channelId String
+    messageId String      @unique
+    createdAt DateTime    @default(now())
+    GuildData GuildData[]
+
+    @@index([guildId])
+}
+
+model MpThreads {
+    uuid      String          @id @default(uuid())
+    userUuid  String
+    user      GlobalUserData? @relation(fields: [userUuid], references: [uuid], onDelete: Cascade)
+    threadId  String          @unique
+    createdAt DateTime        @default(now())
+
+    @@index([userUuid], map: "MpThreads_userUuid_fkey")
+}
+}

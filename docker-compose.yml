@@ -1,0 +1,18 @@
+services:
+  goblins:
+    build: .
+    image: fowlerz/goblins:latest
+    container_name: goblins
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+
+  database:
+    image: postgres:17-bookworm
+    container_name: goblins_db
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: goblins
+      POSTGRES_PASSWORD: goblins
+      POSTGRES_DB: goblins_db
