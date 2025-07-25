@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-    provider = "mysql"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
@@ -15,7 +15,6 @@ model GlobalUserData {
     quizGoodAnswers Int             @default(0)
     quizBadAnswers  Int             @default(0)
     QuizQuestions   QuizQuestions[]
-    Quote           Quote[]
     MpThreads       MpThreads[]
 
     @@index([userId])
@@ -35,7 +34,7 @@ model GuildData {
     uuid                    String          @id @default(uuid())
     guildId                 String          @unique
     debugRoleId             String?
-    calendarUrl             String?         @db.MediumText
+    calendarUrl             String?
     calendarMessageId       String?
     CalendarMessageData     BotMessageData? @relation(fields: [CalendarMessageDatauuid], references: [uuid])
     CalendarMessageDatauuid String?
@@ -56,7 +55,7 @@ model QuizQuestions {
     lastTimeUsed DateTime?
     category     String
     difficulty   String
-    author       GlobalUserData? @relation(fields: [authorUuid], references: [uuid], onDelete: Cascade)
+    author       GlobalUserData? @relation(fields: [authorUuid], references: [uuid], onDelete: Cascade, map: "QuizQuestions_authorUuid_fk")
 
     @@index([guildId])
     @@index([authorUuid], map: "QuizQuestions_authorUuid_fkey")
@@ -76,10 +75,9 @@ model BotMessageData {
 model MpThreads {
     uuid      String          @id @default(uuid())
     userUuid  String
-    user      GlobalUserData? @relation(fields: [userUuid], references: [uuid], onDelete: Cascade)
+    user      GlobalUserData? @relation(fields: [userUuid], references: [uuid], onDelete: Cascade, map: "MpThreads_userUuid_fk")
     threadId  String          @unique
     createdAt DateTime        @default(now())
 
     @@index([userUuid], map: "MpThreads_userUuid_fkey")
-}
 }
