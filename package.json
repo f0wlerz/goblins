@@ -1,12 +1,12 @@
 {
-  "name": "lesGoblins",
+  "name": "the-goblins-bot",
   "module": "index.ts",
   "author": {
     "name": "Fowlerz",
     "email": "fowlerztwitch@gmail.com"
   },
   "version": "1.0.0",
-  "description": "Those goblins may be the most evil ones you've never seen. Or the nicest, we're not sure.",
+  "description": "Those goblins may be the most evil ones you've never seen. Or the nicest, no way to tell.",
   "license": "GPL-2.0-only",
   "maintainers": [
     {
